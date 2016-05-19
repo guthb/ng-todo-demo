@@ -1,0 +1,17 @@
+{
+  "name": "ng-todo-demo",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Bradley Guthrie <guppy96@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/guthb/ng-todo-demo",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
