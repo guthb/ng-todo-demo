@@ -20,7 +20,7 @@ app.controller("TodoCtrl", function($scope){
       assignedTo:"greg",
       location:"Zoe's house",
       urgency:"low",
-      dependencies:["sunshine", "clippers", "hat", "water", "headphones"]
+      dependencies:["sunshine, clippers, hat, water, headphones"]
 
     },
     {
@@ -31,7 +31,7 @@ app.controller("TodoCtrl", function($scope){
       assignedTo:"joe",
       location:"NSS",
       urgency:"low",
-      dependencies:["wifi", "tissues", "vodka"]
+      dependencies:["wifi, tissues, vodka"]
 
     },
     {
@@ -42,10 +42,10 @@ app.controller("TodoCtrl", function($scope){
       assignedTo:"zoe",
       location:"Zoe's house",
       urgency:"high",
-      dependencies:["hammock", "headphones"]
+      dependencies:["hammock, cat, pillow, blanket"]
 
     }
-  ]
+  ];
 
 
 
@@ -58,6 +58,23 @@ app.controller("TodoCtrl", function($scope){
     console.log("you clicked all items");
     $scope.showListView = true;
   };
+
+  $scope.addNewItem= function(){
+    $scope.newTask.isCompleted=false;
+    $scope.newTask.id = $scope.items.length;
+    console.log("you added a new item", $scope.newTask );
+    $scope.items.push($scope.newTask);
+    console.log("items",$scope.items );
+    $scope.newTask="";
+  };
+
+
+
+
+
+
+
+
 
 
 });
