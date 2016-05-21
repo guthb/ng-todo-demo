@@ -1,5 +1,14 @@
 $lobster: bisque;
+$red: red;
 
 body {
-  background: lobster;
+  background: $lobster;
+}
+
+h1{
+  text-align: center;
+}
+
+.main-container {
+  border:2px dashed $red;
 }
