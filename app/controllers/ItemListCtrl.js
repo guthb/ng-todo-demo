@@ -1,8 +1,4 @@
-app.controller("TodoCtrl", function($scope){
-
-  $scope.welcome = "hello";
-  $scope.showListView = true;
-  $scope.newTask = {};
+app.controller("ItemListCtrl", function($scope){
   $scope.items =[
     {
       id: 0,
@@ -38,23 +34,4 @@ app.controller("TodoCtrl", function($scope){
 
     }
   ];
-
-  $scope.newItem = function(){
-    console.log("You clicked new items");
-    $scope.showListView = false;
-  };
-
-  $scope.allItem=function(){
-    console.log("you clicked all items");
-    $scope.showListView = true;
-  };
-
-  $scope.addNewItem= function(){
-    $scope.newTask.isCompleted=false;
-    $scope.newTask.id = $scope.items.length;
-    console.log("you added a new item", $scope.newTask );
-    $scope.items.push($scope.newTask);
-    console.log("items",$scope.items );
-    $scope.newTask="";
-  };
 });
