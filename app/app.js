@@ -8,9 +8,8 @@ app.controller("NavCtrl", function($scope){
 app.controller("TodoCtrl", function($scope){
 
   $scope.welcome = "hello";
-  $scope.showListView = false;
+  $scope.showListView = true;
   $scope.newTask = {};
-
   $scope.items =[
     {
       id: 0,
@@ -25,7 +24,7 @@ app.controller("TodoCtrl", function($scope){
     },
     {
       id: 1,
-      task: "grade quizes",
+      task: "grade quizes brad",
       isCompleted:true,
       dueDate:"12/5/15",
       assignedTo:"joe",
