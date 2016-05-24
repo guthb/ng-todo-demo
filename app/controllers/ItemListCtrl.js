@@ -1,37 +1,42 @@
-app.controller("ItemListCtrl", function($scope){
-  $scope.items =[
-    {
-      id: 0,
-      task: "mow the lawn",
-      isCompleted:true,
-      dueDate:"12/5/17",
-      assignedTo:"greg",
-      location:"Zoe's house",
-      urgency:"low",
-      dependencies:["sunshine, clippers, hat, water, headphones"]
+app.controller("ItemListCtrl", function($scope, $http, $location){
 
-    },
-    {
-      id: 1,
-      task: "grade quizes",
-      isCompleted:true,
-      dueDate:"12/5/15",
-      assignedTo:"joe",
-      location:"NSS",
-      urgency:"low",
-      dependencies:["wifi, tissues, vodka"]
+  $scope.items =[];
+    // old way Jqueryexample
+    // $.ajax(function(){
+    //   url:'../data.itmes.json'
+    //   method:"GET"
+    // }).done()
 
-    },
-    {
-      id: 2,
-      task: "take a nap",
-      isCompleted:true,
-      dueDate:"12/5/16",
-      assignedTo:"zoe",
-      location:"Zoe's house",
-      urgency:"high",
-      dependencies:["hammock, cat, pillow, blanket"]
+    //angular is called from  index.html  only  on "."
+    // $http.get('./data/items.json') //local
+    var getItems = function(){
+    $http.get('https://ng-bg-todo.firebaseio.com/items.json')  //firebaase
 
-    }
-  ];
+     .success(function(itemObject){
+        // var itemCollection = itemObject.items; //local
+        var itemCollection = itemObject;
+
+        console.log("itemObject", itemObject);
+        // returns all the key in an array
+        Object.keys(itemCollection).forEach(function(key){
+          // goes through every key in this array and writes back to the object the id as  a property
+          // console.log("before",itemCollection[key] );
+          itemCollection[key].id=key;
+          console.log("after",itemCollection[key] );
+          $scope.items.push(itemCollection[key])
+        })
+     });
+   }
+   getItems();
+     $scope.itemDelete = function(itemId){
+      console.log("itemId",itemId );
+      $http
+        .delete(`https://ng-bg-todo.firebaseio.com/items/${itemId}.json`) //es6 method
+        .success(function(response){
+          console.log(response);
+          $scope.items=[];
+          getItems();
+        })
+     }
+
 });

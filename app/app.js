@@ -10,10 +10,15 @@ app.config(function($routeProvider){
       templateUrl:"partials/item-new.html",
       controller:"ItemNewCtrl"
     }).
-    when("/items/details",{
+    // when("/items/details",{
+    //   templateUrl:"partials/item-details.html",
+    //   controller:"ItemViewCtrl"
+    // }).
+    when('/items/:itemId', {
       templateUrl:"partials/item-details.html",
       controller:"ItemViewCtrl"
     }).
+
     otherwise("items/list");
 
 });

@@ -1,47 +1,44 @@
-app.controller("ItemNewCtrl", function($scope){
-  $scope.newTask = {};
-  $scope.items =[
-    {
-      id: 0,
-      task: "mow the lawn",
-      isCompleted:true,
-      dueDate:"12/5/17",
-      assignedTo:"greg",
-      location:"Zoe's house",
-      urgency:"low",
-      dependencies:["sunshine, clippers, hat, water, headphones"]
+'use strict'
 
-    },
-    {
-      id: 1,
-      task: "grade quizes brad",
-      isCompleted:true,
-      dueDate:"12/5/15",
-      assignedTo:"joe",
-      location:"NSS",
-      urgency:"low",
-      dependencies:["wifi, tissues, vodka"]
+app.controller("ItemNewCtrl", function($scope, $http, $location){
 
-    },
-    {
-      id: 2,
-      task: "take a nap",
-      isCompleted:true,
-      dueDate:"12/5/16",
-      assignedTo:"zoe",
-      location:"Zoe's house",
-      urgency:"high",
-      dependencies:["hammock, cat, pillow, blanket"]
+  // $scope.newTask = {}; //local
+  $scope.newTask = {
+    assignedTo: "",
+    dependencies: "",
+    dueDate: "",
+    isCompleted: false,
+    locations: "",
+    task: "",
+    urgency: ""
+  };
 
-    }
-  ];
+  // $scope.items =[]  //remved as will ge going to new controller
 
+  // $scope.addNewItem= function(){
+    // $scope.newTask.isCompleted=false;
+    // $scope.newTask.id = $scope.items.length;
+    // console.log("you added a new item", $scope.newTask );
+    // $scope.items.push($scope.newTask);
+    // console.log("items",$scope.items );
+    // $scope.newTask="";
   $scope.addNewItem= function(){
-    $scope.newTask.isCompleted=false;
-    $scope.newTask.id = $scope.items.length;
-    console.log("you added a new item", $scope.newTask );
-    $scope.items.push($scope.newTask);
-    console.log("items",$scope.items );
-    $scope.newTask="";
+    $http.post("https://ng-bg-todo.firebaseio.com/items.json",
+      JSON.stringify({
+        assignedTo:  $scope.newTask.assignedTo,
+        dependencies: $scope.newTask.dependencies,
+        dueDate: $scope.newTask.dueDate,
+        isCompleted: $scope.newTask.isCompleted,
+        locations: $scope.newTask.locations,
+        task: $scope.newTask.task,
+        urgency: $scope.newTask.urgency
+      })
+      )
+      .success(function(response){
+        console.log("response",response );
+        $location.url("/items/list")
+      })
+
+
   };
 });
