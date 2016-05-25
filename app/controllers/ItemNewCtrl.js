@@ -22,23 +22,30 @@ app.controller("ItemNewCtrl", function($scope, $http, $location){
     // $scope.items.push($scope.newTask);
     // console.log("items",$scope.items );
     // $scope.newTask="";
-  $scope.addNewItem= function(){
-    $http.post("https://ng-bg-todo.firebaseio.com/items.json",
-      JSON.stringify({
-        assignedTo:  $scope.newTask.assignedTo,
-        dependencies: $scope.newTask.dependencies,
-        dueDate: $scope.newTask.dueDate,
-        isCompleted: $scope.newTask.isCompleted,
-        locations: $scope.newTask.locations,
-        task: $scope.newTask.task,
-        urgency: $scope.newTask.urgency
-      })
-      )
-      .success(function(response){
-        console.log("response",response );
-        $location.url("/items/list")
-      })
+
+  // $scope.addNewItem= function(){
+  //   $http.post("https://ng-bg-todo.firebaseio.com/items.json",
+  //     JSON.stringify({
+  //       assignedTo:  $scope.newTask.assignedTo,
+  //       dependencies: $scope.newTask.dependencies,
+  //       dueDate: $scope.newTask.dueDate,
+  //       isCompleted: $scope.newTask.isCompleted,
+  //       locations: $scope.newTask.locations,
+  //       task: $scope.newTask.task,
+  //       urgency: $scope.newTask.urgency
+  //     })
+  //     )
+  //     .success(function(response){
+  //       console.log("response",response );
+  //       $location.url("/items/list")
+  //     })
 
 
-  };
+  $scope.addNewItem = function(){
+        itemStorage.postNewItem($scope.newTask)
+            .then(function successCallback(response) {
+                console.log(response)
+                $location.url("/items/list");
+            });
+    };
 });
