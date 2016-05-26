@@ -10,6 +10,34 @@
   </div>
 </div>
 
+<h3>In Progress</h3>
+<div class="panel panel-default">
+    <div class="panel-body">
+      <div class="col-xs-1"></div>
+      <div class="col-xs-7">Task</div>
+      <div class="col-xs-2">Due Date</div>
+      <div class="col-xs-1">Assigned To</div>
+      <div class="col-xs-1"></div>
+    </div>
+</div>
+<div ng-repeat="thingy in items | filter: searchText">  <!--for each loop-->
+  <div class="panel panel-default" ng-hide="thingy.isCompleted">
+    <div class="panel-body">
+      <div class="col-xs-1"><input type="checkbox" ng-model="thingy.isCompleted" ng-change="inputChange(thingy)"/></div>
+      <div class="col-xs-7"><a ng-href="#/items/{{thingy.id}}">{{thingy.task}}</a></div>
+      <div class="col-xs-2">{{thingy.dueDate}}</div>
+      <div class="col-xs-1">{{thingy.assignedTo}}</div>
+      <div class="col-xs-1">
+        <button class="btn btn-danger" ng-click="itemDelete(thingy.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<h3>Completed</h3>
+
 <div class="panel panel-default">
     <div class="panel-body">
       <div class="col-xs-1"></div>
@@ -21,19 +49,14 @@
 </div>
 
 
-
-
-
-<div ng-repeat="thingy in items | filter: searchText">  <!--for each loop-->
+<div ng-repeat="thingy in items | filter: {isCompleted: true}">  <!--for each loop-->
   <div class="panel panel-default">
     <div class="panel-body">
-      <div class="col-xs-1"><input type="checkbox" name =""/></div>
+      <div class="col-xs-1"><input type="checkbox" ng-model="thingy.isCompleted" ng-change="inputChange(thingy)"/></div>
       <div class="col-xs-7"><a ng-href="#/items/{{thingy.id}}">{{thingy.task}}</a></div>
       <div class="col-xs-2">{{thingy.dueDate}}</div>
       <div class="col-xs-1">{{thingy.assignedTo}}</div>
-      <div class="col-xs-1">
-        <button class="btn btn-danger" ng-click="itemDelete(thingy.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
-      </div>
+      <div class="col-xs-1"></div>
     </div>
   </div>
 </div>
