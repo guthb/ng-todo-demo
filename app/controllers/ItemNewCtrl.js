@@ -1,6 +1,9 @@
 'use strict'
 
-app.controller("ItemNewCtrl", function($scope, $http, $location){
+app.controller("ItemNewCtrl", function($scope, $http, $location, itemStorage){
+
+    $scope.title ="New Item";
+    $scope.submitButtonText = "Update New Item";
 
   // $scope.newTask = {}; //local
   $scope.newTask = {
