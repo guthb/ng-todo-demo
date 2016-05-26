@@ -1,12 +1,11 @@
-'use strict';
-
-app.factory("itemStorage", function($q, $http){
+'esversion: 6'
+app.factory("itemStorage", function($q, $http, firebaseURL){
 
 
   var getItemList = function(){
     var items =[];
     return $q(function(resolve, reject){
-      $http.get('https://ng-bg-todo.firebaseio.com/items.json')  //firebaase
+      $http.get(firebaseURL + `items.json`)  //firebaase
         .success(function(itemObject){
         // var itemCollection = itemObject.items; //local
           var itemCollection = itemObject;
@@ -18,33 +17,33 @@ app.factory("itemStorage", function($q, $http){
           // console.log("before",itemCollection[key] );
             itemCollection[key].id=key;
             // console.log("after",itemCollection[key] );
-            items.push(itemCollection[key])
-           })
+            items.push(itemCollection[key]);
+           });
           resolve(items);
         })
         .error(function(error){
            reject(error);
         });
-    })
-  }
+    });
+  };
 
   var deleteItem = function (itemId){
 
   return $q(function(resolve, reject){
       $http
-        .delete(`https://ng-bg-todo.firebaseio.com/items/${itemId}.json`)
+        .delete(firebaseURL +`items/${itemId}.json`)
         .success(function(objectFromFirebase){
           resolve(objectFromFirebase);
-        })
+        });
 
-        })
-}
+        });
+};
 
 
   var postNewItem = function(newItem){
         return $q(function(resolve, reject) {
             $http.post(
-                "https://ng-bg-todo.firebaseio.com/items.json",
+                firebaseURL + `items.json`,
                 JSON.stringify({
                     assignedTo: newItem.assignedTo,
                     dependencies: newItem.dependencies,
@@ -57,18 +56,18 @@ app.factory("itemStorage", function($q, $http){
             )
             .success(
                 function(objectFromFirebase) {
-                    resolve(objectFromFirebase);
+                    resolve(objectFromFirebase); //promise word
                 }
             );
         });
-  }
+  };
 
 
 
 
 
 
-  return {getItemList:getItemList, deleteItem:deleteItem}
+  return {getItemList:getItemList, deleteItem:deleteItem, postNewItem:postNewItem};
 
 
-})
+});
