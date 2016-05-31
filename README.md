@@ -44,7 +44,7 @@ For developers do all:   open new terminal cd lib and gulp ( to see errors)
 
 1. Enable sorting of the list
 
-#### Styling and Clean up of application
+### Styling and Clean up of application
 1. Clean up and style with CSS and addtional controllers and  enhancements to factory
 
 
