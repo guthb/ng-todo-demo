@@ -1,13 +1,16 @@
 'esversion: 6'
-app.factory("itemStorage", function($q, $http, firebaseURL){
+app.factory("itemStorage", function($q, $http, firebaseURL, AuthFactory){
 
 
   var getItemList = function(){
     var items =[];
+    let user = AuthFactory.getUser();
+    console.log("user", user);
     return $q(function(resolve, reject){
-      $http.get(firebaseURL + `items.json`)  //firebaase
+      $http.get(`${firebaseURL}items.json?orderBy="uid"&equalTo="${user.uid}"`) //firebaase
         .success(function(itemObject){
         // var itemCollection = itemObject.items; //local
+          console.log("itemobject",itemObject );
           var itemCollection = itemObject;
 
           console.log("itemObject", itemObject);
@@ -37,100 +40,94 @@ app.factory("itemStorage", function($q, $http, firebaseURL){
         });
 
         });
-};
+  };//---->end of  deleteItem
 
 
   var postNewItem = function(newItem){
-        return $q(function(resolve, reject) {
-            $http.post(
-                firebaseURL + `items.json`,
-                JSON.stringify({
-                    assignedTo: newItem.assignedTo,
-                    dependencies: newItem.dependencies,
-                    dueDate: newItem.dueDate,
-                    isCompleted: newItem.isCompleted,
-                    location: newItem.location,
-                    task: newItem.task,
-                    urgency: newItem.urgency
-                })
-            )
-            .success(
-                function(objectFromFirebase) {
-                    resolve(objectFromFirebase); //promise word
-                }
-            );
-        });
-  };
-
-
+    let user = AuthFactory.getUser();
+    console.log("user in post new item", user );
+    return $q(function(resolve, reject) {
+        $http.post(
+            firebaseURL + `items.json`,
+            JSON.stringify({
+                assignedTo: newItem.assignedTo,
+                dependencies: newItem.dependencies,
+                dueDate: newItem.dueDate,
+                isCompleted: newItem.isCompleted,
+                location: newItem.location,
+                task: newItem.task,
+                urgency: newItem.urgency,
+                uid:user.uid
+            })
+        )
+        .success(
+            function(objectFromFirebase) {
+                resolve(objectFromFirebase); //promise word
+            }
+        );
+    });
+  };//---end of postNewItem
 
 var getSingleItem = function(itemId) {
+  return $q(function(resolve, reject){
+    $http.get(firebaseURL + `items/${itemId}.json`)  //firebaase
+      .success(function(itemObject){
+      // var itemCollection = itemObject.items; //local
 
-
-    return $q(function(resolve, reject){
-      $http.get(firebaseURL + `items/${itemId}.json`)  //firebaase
-        .success(function(itemObject){
-        // var itemCollection = itemObject.items; //local
-
-          resolve(itemObject);
-        })
-        .error(function(error){
-           reject(error);
-        });
-    });
+        resolve(itemObject);
+      })
+      .error(function(error){
+         reject(error);
+      });
+  }); //--end of return
 }
 
-  var putItem = function(itemId, newItem){
-        return $q(function(resolve, reject) {
-            $http.put(
-                firebaseURL + `items/${itemId}.json`,
-                JSON.stringify({
-                    assignedTo: newItem.assignedTo,
-                    dependencies: newItem.dependencies,
-                    dueDate: newItem.dueDate,
-                    isCompleted: newItem.isCompleted,
-                    location: newItem.location,
-                    task: newItem.task,
-                    urgency: newItem.urgency
-                })
-            )
-            .success(
-                function(objectFromFirebase) {
-                    resolve(objectFromFirebase); //promise word
-                }
-            );
-        });
+var putItem = function(itemId, newItem){
+  let user = AuthFactory.getUser();
+  return $q(function(resolve, reject) {
+      $http.put(
+          firebaseURL + `items/${itemId}.json`,
+          JSON.stringify({
+              assignedTo: newItem.assignedTo,
+              dependencies: newItem.dependencies,
+              dueDate: newItem.dueDate,
+              isCompleted: newItem.isCompleted,
+              location: newItem.location,
+              task: newItem.task,
+              urgency: newItem.urgency,
+              uid:user.uid
+          })
+      )
+      .success(
+          function(objectFromFirebase) {
+            resolve(objectFromFirebase); //promise word
+          }
+      );
+  }); //-->end of return
+}; //---> end of putItem
+
+
+var updateCompletedStatus = function(newItem){
+  return $q(function(resolve, reject) {
+      $http.put(
+          firebaseURL + `items/${newItem.id}.json`,
+          JSON.stringify({
+              assignedTo: newItem.assignedTo,
+              dependencies: newItem.dependencies,
+              dueDate: newItem.dueDate,
+              isCompleted: newItem.isCompleted,
+              location: newItem.location,
+              task: newItem.task,
+              urgency: newItem.urgency
+          })
+      )
+      .success(
+        function(objectFromFirebase) {
+          resolve(objectFromFirebase); //promise word
+        }
+      );
+  });
   };
-
-
-
-  var updateCompletedStatus = function(newItem){
-          return $q(function(resolve, reject) {
-              $http.put(
-                  firebaseURL + `items/${newItem.id}.json`,
-                  JSON.stringify({
-                      assignedTo: newItem.assignedTo,
-                      dependencies: newItem.dependencies,
-                      dueDate: newItem.dueDate,
-                      isCompleted: newItem.isCompleted,
-                      location: newItem.location,
-                      task: newItem.task,
-                      urgency: newItem.urgency
-                  })
-              )
-              .success(
-                  function(objectFromFirebase) {
-                      resolve(objectFromFirebase); //promise word
-                  }
-              );
-          });
-    };
-
-
-
-
-
-
 
   return {putItem:putItem, getItemList:getItemList, deleteItem:deleteItem, postNewItem:postNewItem, getSingleItem:getSingleItem, updateCompletedStatus:updateCompletedStatus}
 

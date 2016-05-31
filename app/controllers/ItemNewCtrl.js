@@ -13,7 +13,8 @@ app.controller("ItemNewCtrl", function($scope, $http, $location, itemStorage){
     isCompleted: false,
     locations: "",
     task: "",
-    urgency: ""
+    urgency: "",
+    uid:""
   };
 
   // $scope.items =[]  //remved as will ge going to new controller
